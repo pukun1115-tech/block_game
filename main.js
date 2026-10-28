@@ -1,45 +1,7 @@
 import { vertex_shader_source, fragment_shader_source } from "./shader.js";
 import { Mat4 } from "./matrix.js";
 import { torus } from "./torus.js";
-import { create_shader, create_program } from "./gl_functions.js";
-
-/**
- * @param {WebGLRenderingContext} gl
- * @param {Array<number> | Float32Array} data
- * @returns {WebGLBuffer | null}
- */
-function create_vbo(gl, data) {
-    /** @type {WebGLBuffer | null} */
-    const vbo = gl.createBuffer();
-    if (vbo === null) {
-        return null;
-    }
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
-
-    return vbo;
-}
-
-/**
- * @param {WebGLRenderingContext} gl
- * @param {Array<number> | Float32Array} data
- * @returns {WebGLBuffer | null}
- */
-function create_ibo(gl, data) {
-    /** @type {WebGLBuffer | null} */
-    const ibo = gl.createBuffer();
-    if (ibo === null) {
-        return null;
-    }
-
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Int16Array(data), gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-
-    return ibo;
-}
+import { create_shader, create_program, create_vbo } from "./gl_functions.js";
 
 /**
  * @param {WebGLRenderingContext} gl
