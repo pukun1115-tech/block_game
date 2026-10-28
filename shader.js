@@ -23,3 +23,36 @@ export const fragment_shader_source = `
         gl_FragColor = vColor;
     }
 `;
+
+/**
+ * @param {WebGLRenderingContext} gl
+ * @param {WebGLProgram} program
+ * @returns {Record<string, number>}
+ */
+export function getAttributeLocations(gl, program) {
+    return {
+        "position": gl.getAttribLocation(program, "position"),
+        "color": gl.getAttribLocation(program, "color"),
+    };
+}
+
+/**
+ * @returns {Record<string, number>}
+ */
+export function getAttributeStrides() {
+    return {
+        "position": 3,
+        "color": 4,
+    };
+}
+
+/**
+ * @param {WebGLRenderingContext} gl
+ * @param {WebGLProgram} program
+ * @returns {Record<string, number>}
+ */
+export function getUniformLocations(gl, program) {
+    return {
+        "matrix": gl.getUniformLocation(program, "matrix"),
+    }
+}
