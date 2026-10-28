@@ -1,33 +1,7 @@
 import { vertex_shader_source, fragment_shader_source } from "./shader.js";
 import { Mat4 } from "./matrix.js";
 import { torus } from "./torus.js";
-import { create_shader } from "./gl_functions.js";
-
-/**
- * @param {WebGLRenderingContext} gl
- * @param {WebGLShader} vs
- * @param {WebGLShader} fs
- * @returns {WebGLProgram | null}
- */
-function create_program(gl, vs, fs) {
-    /** @type {WebGLProgram | null} */
-    const program = gl.createProgram();
-    if (program === null) {
-        return null;
-    }
-
-    gl.attachShader(program, vs);
-    gl.attachShader(program, fs);
-
-    gl.linkProgram(program);
-
-    if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        return program;
-    } else {
-        console.error(gl.getProgramInfoLog(program));
-        return null;
-    }
-}
+import { create_shader, create_program } from "./gl_functions.js";
 
 /**
  * @param {WebGLRenderingContext} gl
