@@ -59,3 +59,23 @@ export function create_program(gl, vs, fs) {
         return null;
     }
 }
+
+/**
+ * @param {WebGLRenderingContext} gl
+ * @param {Array<number> | Float32Array} data
+ * @returns {WebGLBuffer | null}
+ */
+export function create_vbo(gl, data) {
+    /** @type {WebGLBuffer | null} */
+    const vbo = gl.createBuffer();
+    if (vbo === null) {
+        console.error("cannot create buffer.");
+        return null;
+    }
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    return vbo;
+}
