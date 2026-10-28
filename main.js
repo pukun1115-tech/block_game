@@ -1,39 +1,7 @@
 import { vertex_shader_source, fragment_shader_source } from "./shader.js";
 import { Mat4 } from "./matrix.js";
 import { torus } from "./torus.js";
-
-/**
- * @param {WebGLRenderingContext} gl
- * @param {string} source
- * @param {"vertex" | "fragment"} type
- * @returns {WebGLShader | null}
- */
-function create_shader(gl, source, type) {
-    /** @type {WebGLShader | null} */
-    let shader = null;
-
-    if (type === "vertex") {
-        shader = gl.createShader(gl.VERTEX_SHADER);
-    } else if (type === "fragment") {
-        shader = gl.createShader(gl.FRAGMENT_SHADER);
-    } else {
-        return null;
-    }
-
-    if (shader === null) {
-        return null;
-    }
-
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-
-    if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        return shader;
-    } else {
-        console.error(gl.getShaderInfoLog(shader));
-        return null;
-    }
-}
+import { create_shader } from "./gl_functions.js";
 
 /**
  * @param {WebGLRenderingContext} gl
