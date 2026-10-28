@@ -114,6 +114,31 @@ function set_attribute(gl, vbos, attLocation, attStride) {
     }
 }
 
+/**
+ * @param {WebGLRenderingContext} gl
+ * @param {string} source
+ * @returns {void}
+ */
+function create_texture(gl, source) {
+    const img = new Image();
+
+    img.onload = () => {
+        const tex = gl.createTexture();
+
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+
+        gl.generateMipmap(gl.TEXTURE2D);
+
+        gl.bindTexture(gl.TEXTURE2D, null);
+
+        texture = tex;
+    };
+
+    img.src = source;
+}
+
 /** @type {HTMLCanvasElement | null} */
 const canvas = document.getElementById("canvas");
 
