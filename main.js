@@ -1,7 +1,7 @@
 import { vertex_shader_source, fragment_shader_source, getAttributeLocations, getAttributeStrides, getUniformLocations } from "./shader.js";
 import { Mat4 } from "./matrix.js";
 import { torus } from "./torus.js";
-import { create_shader, create_program, create_vbo, create_ibo } from "./gl_functions.js";
+import { create_shader, create_program, create_vbo, create_ibo, create_texture } from "./gl_functions.js";
 
 /**
  * @param {WebGLRenderingContext} gl
