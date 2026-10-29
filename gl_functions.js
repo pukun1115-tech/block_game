@@ -79,3 +79,47 @@ export function create_vbo(gl, data) {
 
     return vbo;
 }
+
+/**
+ * @param {WebGLRenderingContext} gl
+ * @param {Array<number> | Int16Array} data 
+ * @returns {WebGLBuffer | null}
+ */
+export function create_ibo(gl, data) {
+    /** @type {WebGLBuffer | null} */
+    const ibo = gl.createBuffer();
+    if (ibo === null) {
+        return null;
+    }
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Int16Array(data), gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+    return ibo;
+}
+
+/**
+ * @param {WebGLRenderingContext} gl
+ * @param {string} source
+ * @returns {void}
+ */
+function create_texture(gl, source) {
+    const img = new Image();
+
+    img.onload = () => {
+        const tex = gl.createTexture();
+
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+
+        gl.generateMipmap(gl.TEXTURE2D);
+
+        gl.bindTexture(gl.TEXTURE2D, null);
+
+        texture = tex;
+    };
+
+    img.src = source;
+}

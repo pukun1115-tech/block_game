@@ -1,4 +1,4 @@
-import { vertex_shader_source, fragment_shader_source } from "./shader.js";
+import { vertex_shader_source, fragment_shader_source, getAttributeLocations, getAttributeStrides, getUniformLocations } from "./shader.js";
 import { Mat4 } from "./matrix.js";
 import { torus } from "./torus.js";
 import { create_shader, create_program, create_vbo } from "./gl_functions.js";
@@ -16,31 +16,6 @@ function set_attribute(gl, vbos, attLocation, attStride) {
         gl.enableVertexAttribArray(attLocation[key]);
         gl.vertexAttribPointer(attLocation[key], attStride[key], gl.FLOAT, false, 0, 0);
     }
-}
-
-/**
- * @param {WebGLRenderingContext} gl
- * @param {string} source
- * @returns {void}
- */
-function create_texture(gl, source) {
-    const img = new Image();
-
-    img.onload = () => {
-        const tex = gl.createTexture();
-
-        gl.bindTexture(gl.TEXTURE_2D, tex);
-
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-
-        gl.generateMipmap(gl.TEXTURE2D);
-
-        gl.bindTexture(gl.TEXTURE2D, null);
-
-        texture = tex;
-    };
-
-    img.src = source;
 }
 
 /** @type {HTMLCanvasElement | null} */
@@ -87,21 +62,14 @@ if (program === null) {
 gl.useProgram(program);
 
 /** @type {Record<string, number>} */
-const attributeLocations = {
-    "position": gl.getAttribLocation(program, "position"),
-    "color": gl.getAttribLocation(program, "color"),
-};
+const attributeLocations = getAttributeLocations(gl, program);
 /** @type {Record<string, number>} */
-const attributeStrides = {
-    "position": 3,
-    "color": 4,
-};
+const attributeStrides = getAttributeStrides();
 
 /** @type {Record<string, number>} */
-const uniformLocations = {
-    "matrix": gl.getUniformLocation(program, "matrix"),
-};
+const uniformLocations = getUniformLocations(gl, program);
 
+let texture = null;
 let frame = 0;
 let indexCount = 0;
 
