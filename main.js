@@ -25,17 +25,6 @@ if (canvas === null) {
     throw new Error("canvas");
 }
 
-/**
- * @param {WebGLRenderingContext} gl
- * @returns {void}
- */
-function resizeCanvas(gl) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    gl.viewport(0, 0, canvas.width, canvas.height);
-}
-
 /** @type {WebGLRenderingContext | null} */
 const gl = canvas.getContext("webgl");
 
@@ -69,8 +58,12 @@ const attributeStrides = getAttributeStrides();
 /** @type {Record<string, number>} */
 const uniformLocations = getUniformLocations(gl, program);
 
+gl.activeTexture(gl.TEXTURE0);
 let texture = null;
-let frame = 0;
+create_texture("./texture1.png");
+
+let count = 0;
+
 let indexCount = 0;
 
 /**
@@ -82,27 +75,19 @@ function mainLoop(gl) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    /** @type {Float32Array} */
-    const mMatrix = Mat4.identity(Mat4.create());
-    /** @type {Float32Array} */
-    const vMatrix = Mat4.identity(Mat4.create());
-    /** @type {Float32Array} */
-    const pMatrix = Mat4.identity(Mat4.create());
+    gl.bindTexture(gl.TEXTURE_2D, texture);
 
-    /** @type {Float32Array} **/
+    gl.uniformli(uniformLocations["textureCoord"], 0);
+
+    const mMatrix = Mat4.identity(Mat4.create());
+    const vMatrix = Mat4.identity(Mat4.create());
+    const pMatrix = Mat4.identity(Mat4.create());
     const mvpMatrix = Mat4.identity(Mat4.create());
 
-    Mat4.lookAt(vMatrix, [0.0, 0.0, 24.0], [0, 0, 0], [0, 1, 0]);
+    Mat4.lookAt(vMatrix, [0.0, 12.0, 24.0], [0, 0, 0], [0, 1, 0]);
     Mat4.perspective(pMatrix, 60 * Math.PI / 180, canvas.width / canvas.height, 0.01, 100);
-
-    //Mat4.rotateZ(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
-    //Mat4.rotateX(mMatrix, mMatrix, ((frame * 2) % 360) * Math.PI / 180);
-    //Mat4.rotateY(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
-    //Mat4.rotateX(mMatrix, mMatrix, (Math.PI * 2 / 360) * (15 + Math.abs((frame % 30) - 15)));
-    Mat4.rotateX(mMatrix, mMatrix, (Math.PI * 2 / 360) * 30);
-    Mat4.rotateY(mMatrix, mMatrix, (frame % 360) * Math.PI / 180);
-    //Mat4.translate(mMatrix, mMatrix, 1, 2, 0);
-
+    Mat4.rotateY(mMatrix, mMatrix, (Math.PI / 180) * (count % 360));
+    
     Mat4.multiply(mvpMatrix, pMatrix, vMatrix);
     Mat4.multiply(mvpMatrix, mvpMatrix, mMatrix);
 
@@ -110,7 +95,7 @@ function mainLoop(gl) {
 
     gl.drawElements(gl.TRIANGLES, indexCount, gl.UNSIGNED_SHORT, 0);
 
-    frame++;
+    count++;
     requestAnimationFrame(() => mainLoop(gl));
 }
 
@@ -121,7 +106,10 @@ function mainLoop(gl) {
 function init(gl) {
     window.addEventListener("resize", () => {
         setTimeout(() => {
-            resizeCanvas(gl);
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            gl.viewport(0, 0, canvas.width, canvas.height);
         }, 10);
     });
     resizeCanvas(gl);
@@ -129,23 +117,48 @@ function init(gl) {
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
-    const torusData = torus(60, 60, 3, 4);
-    const [position, color, index] = torusData;
+    const position = [
+        -0.5, -0.5, 0,
+        0.5, -0.5, 0,
+        0.5, 0.5, 0,
+        -0.5, 0.5, 0,
+    ];
+    const color = [
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+    ];
+    const textureCoord = [
+        0.0, 0.0,
+        1.0, 0.0,
+        1.0, 1.0,
+        0.0, 1.0,
+    ];
+    const index = [
+        0, 1, 2,
+        0, 2, 3,
+    ];
     indexCount = index.length;
     const ibo = create_ibo(gl, index);
+    const position_vbo = create_vbo(gl, position);
+    const color_vbo = create_vbo(gl, color);
+    const textureCoord_vbo = create_vbo(gl, textureCoord);
+
     if (ibo === null) {
         throw new Error("create_ibo");
     }
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-    const position_vbo = create_vbo(gl, position);
-    const color_vbo = create_vbo(gl, color);
-
     if (position_vbo === null || color_vbo === null) {
         throw new Error("create_vbo");
     }
 
-    set_attribute(gl, { "position": position_vbo, "color": color_vbo }, attributeLocations, attributeStrides);
-
+    set_attribute(gl, {
+        "position": position_vbo,
+        "color": color_vbo,
+        "textureCoord": textureCoord_vbo,
+    }, attributeLocations, attributeStrides);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+    
     mainLoop(gl);
 }
 
