@@ -62,7 +62,7 @@ function mainLoop(gl) {
 
     gl.bindTexture(gl.TEXTURE_2D, texture);
 
-    gl.uniformli(uniformLocations["textureCoord"], 0);
+    gl.uniform1i(uniformLocations["textureCoord"], 0);
 
     const mMatrix = Mat4.identity(Mat4.create());
     const vMatrix = Mat4.identity(Mat4.create());
@@ -72,7 +72,7 @@ function mainLoop(gl) {
     Mat4.lookAt(vMatrix, [0.0, 12.0, 24.0], [0, 0, 0], [0, 1, 0]);
     Mat4.perspective(pMatrix, 60 * Math.PI / 180, canvas.width / canvas.height, 0.01, 100);
     Mat4.rotateY(mMatrix, mMatrix, (Math.PI / 180) * (count % 360));
-    
+
     Mat4.multiply(mvpMatrix, pMatrix, vMatrix);
     Mat4.multiply(mvpMatrix, mvpMatrix, mMatrix);
 
@@ -97,7 +97,10 @@ function init(gl) {
             gl.viewport(0, 0, canvas.width, canvas.height);
         }, 10);
     });
-    resizeCanvas(gl);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    gl.viewport(0, 0, canvas.width, canvas.height);
 
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
@@ -143,7 +146,7 @@ function init(gl) {
         "textureCoord": textureCoord_vbo,
     }, attributeLocations, attributeStrides);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-    
+
     mainLoop(gl);
 }
 

@@ -104,7 +104,7 @@ export function create_ibo(gl, data) {
  * @param {string} source
  * @returns {void}
  */
-function create_texture(gl, source) {
+export function create_texture(gl, source) {
     const img = new Image();
 
     img.onload = () => {
