@@ -71,7 +71,7 @@ function mainLoop(gl) {
     const pMatrix = Mat4.identity(Mat4.create());
     const mvpMatrix = Mat4.identity(Mat4.create());
 
-    Mat4.lookAt(vMatrix, [0.0, 12.0, 24.0], [0, 0, 0], [0, 1, 0]);
+    Mat4.lookAt(vMatrix, [0.0, 3.0, 6.0], [0, 0, 0], [0, 1, 0]);
     Mat4.perspective(pMatrix, 60 * Math.PI / 180, canvas.width / canvas.height, 0.01, 100);
     Mat4.rotateY(mMatrix, mMatrix, (Math.PI / 180) * (count % 360));
 
@@ -105,7 +105,7 @@ function init(gl) {
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     gl.enable(gl.DEPTH_TEST);
-    gl.enable(gl.CULL_FACE);
+    //gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
     const position = [
         -0.5, -0.5, 0,
