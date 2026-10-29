@@ -1,22 +1,7 @@
 import { vertex_shader_source, fragment_shader_source, getAttributeLocations, getAttributeStrides, getUniformLocations } from "./shader.js";
 import { Mat4 } from "./matrix.js";
 import { torus } from "./torus.js";
-import { create_shader, create_program, create_vbo, create_ibo, create_texture } from "./gl_functions.js";
-
-/**
- * @param {WebGLRenderingContext} gl
- * @param {Record<string, WebGLBuffer>} vbos
- * @param {Record<string, number>} attLocation
- * @param {Record<string, number>} attStride
- * @returns {void}
- */
-function set_attribute(gl, vbos, attLocation, attStride) {
-    for (const key of Object.keys(attLocation)) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, vbos[key]);
-        gl.enableVertexAttribArray(attLocation[key]);
-        gl.vertexAttribPointer(attLocation[key], attStride[key], gl.FLOAT, false, 0, 0);
-    }
-}
+import { create_shader, create_program, create_vbo, create_ibo, create_texture, set_attribute } from "./gl_functions.js";
 
 /** @type {HTMLCanvasElement | null} */
 const canvas = document.getElementById("canvas");
