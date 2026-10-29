@@ -76,7 +76,7 @@ function mainLoop(gl) {
     Mat4.multiply(mvpMatrix, pMatrix, vMatrix);
     Mat4.multiply(mvpMatrix, mvpMatrix, mMatrix);
 
-    gl.uniformMatrix4fv(uniformLocations["matrix"], false, mvpMatrix);
+    gl.uniformMatrix4fv(uniformLocations["mvpMatrix"], false, mvpMatrix);
 
     gl.drawElements(gl.TRIANGLES, indexCount, gl.UNSIGNED_SHORT, 0);
 
