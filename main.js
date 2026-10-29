@@ -45,7 +45,9 @@ const uniformLocations = getUniformLocations(gl, program);
 
 gl.activeTexture(gl.TEXTURE0);
 let texture = null;
-create_texture("./texture1.png");
+create_texture(gl, "./texture1.png", (loadedTexture) => {
+    texture = loadedTexture;
+});
 
 let count = 0;
 
@@ -62,7 +64,7 @@ function mainLoop(gl) {
 
     gl.bindTexture(gl.TEXTURE_2D, texture);
 
-    gl.uniform1i(uniformLocations["textureCoord"], 0);
+    gl.uniform1i(uniformLocations["texture"], 0);
 
     const mMatrix = Mat4.identity(Mat4.create());
     const vMatrix = Mat4.identity(Mat4.create());
