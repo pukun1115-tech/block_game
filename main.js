@@ -70,8 +70,8 @@ function mainLoop(gl, indexCount, t) {
     Mat4.identity(pMatrix);
     Mat4.identity(mvpMatrix);
 
-    Mat4.lookAt(vMatrix, [0.0, 1.0, 2.0], [0, 0, 0], [0, 1, 0]);
-    Mat4.perspective(pMatrix, 60 * Math.PI / 180, gl.canvas.width / gl.canvas.height, 0.01, 100);
+    Mat4.lookAt(vMatrix, [1.0, -1.0, 2.0], [0, 0, 0], [0, 1, 0]);
+    Mat4.perspective(pMatrix, 90 * Math.PI / 180, gl.canvas.width / gl.canvas.height, 0.01, 100);
     Mat4.rotateY(mMatrix, mMatrix, (Math.PI / 180) * (t % 360));
 
     Mat4.multiply(mvpMatrix, pMatrix, vMatrix);
@@ -128,8 +128,28 @@ function init(gl) {
         -0.5, -0.5, 0.5,
         -0.5, 0.5, 0.5,
         -0.5, 0.5, -0.5,
+
+        -0.5, 0.5, 0.5,
+        0.5, 0.5, 0.5,
+        0.5, 0.5, -0.5,
+        -0.5, 0.5, -0.5,
+
+        -0.5, -0.5, -0.5,
+        0.5, -0.5, -0.5,
+        0.5, -0.5, 0.5,
+        -0.5, -0.5, 0.5,
     ];
     const color = [
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+
         1.0, 1.0, 1.0, 1.0,
         1.0, 1.0, 1.0, 1.0,
         1.0, 1.0, 1.0, 1.0,
@@ -170,6 +190,16 @@ function init(gl) {
         0.5, 0.25,
         0.5, 0.0,
         0.25, 0.0,
+
+        0.0, 0.25,
+        0.25, 0.25,
+        0.25, 0.0,
+        0.0, 0.0,
+
+        0.25, 0.5,
+        0.5, 0.5,
+        0.5, 0.25,
+        0.25, 0.25,
     ];
     const index = [
         0, 1, 2,
@@ -183,6 +213,12 @@ function init(gl) {
 
         12, 13, 14,
         12, 14, 15,
+
+        16, 17, 18,
+        16, 18, 19,
+
+        20, 21, 22,
+        20, 22, 23,
     ];
     const ibo = create_ibo(gl, index);
     const position_vbo = create_vbo(gl, position);
