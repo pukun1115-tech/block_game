@@ -70,7 +70,7 @@ function mainLoop(gl, indexCount, t) {
     Mat4.identity(pMatrix);
     Mat4.identity(mvpMatrix);
 
-    Mat4.lookAt(vMatrix, [0.0, 3.0, 2.0], [0, 0, 0], [0, 1, 0]);
+    Mat4.lookAt(vMatrix, [0.0, 1.0, 2.0], [0, 0, 0], [0, 1, 0]);
     Mat4.perspective(pMatrix, 60 * Math.PI / 180, gl.canvas.width / gl.canvas.height, 0.01, 100);
     Mat4.rotateY(mMatrix, mMatrix, (Math.PI / 180) * (t % 360));
 
@@ -109,15 +109,15 @@ function init(gl) {
     //gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
     const position = [
-        -0.5, -0.5, 0,
-        0.5, -0.5, 0,
-        0.5, 0.5, 0,
-        -0.5, 0.5, 0,
+        -0.5, -0.5, 0.5,
+        0.5, -0.5, 0.5,
+        0.5, 0.5, 0.5,
+        -0.5, 0.5, 0.5,
     ];
     const color = [
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0,
         1.0, 1.0, 1.0, 1.0,
     ];
     const textureCoord = [
