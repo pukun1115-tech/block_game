@@ -49,6 +49,8 @@ create_texture(gl, "./texture1.png", (loadedTexture) => {
     texture = loadedTexture;
 });
 gl.bindTexture(gl.TEXTURE_2D, texture);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_NEAREST);
 
 const mMatrix = Mat4.identity(Mat4.create());
 const vMatrix = Mat4.identity(Mat4.create());
