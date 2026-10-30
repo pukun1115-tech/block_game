@@ -43,14 +43,11 @@ const attributeStrides = getAttributeStrides();
 const uniformLocations = getUniformLocations(gl, program);
 
 gl.activeTexture(gl.TEXTURE0);
-/** @type {} */
-let texture = null;
 create_texture(gl, "./texture1.png", (loadedTexture) => {
-    texture = loadedTexture;
+    gl.bindTexture(gl.TEXTURE_2D, loadedTexture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_NEAREST);
 });
-gl.bindTexture(gl.TEXTURE_2D, texture);
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_NEAREST);
 
 const mMatrix = Mat4.identity(Mat4.create());
 const vMatrix = Mat4.identity(Mat4.create());
@@ -103,10 +100,10 @@ function init(gl) {
     }
     window.addEventListener("resize", () => {
         setTimeout(() => {
-            resizeCanvas();
+            resizeCanvas(gl);
         }, 10);
     });
-    resizeCanvas();
+    resizeCanvas(gl);
 
     gl.enable(gl.DEPTH_TEST);
     //gl.enable(gl.CULL_FACE);
@@ -141,7 +138,7 @@ function init(gl) {
     if (ibo === null) {
         throw new Error("create_ibo");
     }
-    if (position_vbo === null || color_vbo === null) {
+    if (position_vbo === null || color_vbo === null || textureCoord_vbo === null) {
         throw new Error("create_vbo");
     }
 
