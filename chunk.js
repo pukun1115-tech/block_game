@@ -27,7 +27,23 @@ export class Chunk {
     }
 
     generateMesh() {
-        //
+        let pos = [];
+        let idx = [];
+        let texCoord = [];
+        let col = [];
+        for (let x = 0; x < CHUNK_SIZE_X; x++) {
+            for (let y = 0; y < CHUNK_SIZE_Y; y++) {
+                for (let z = 0; z < CHUNK_SIZE_Z; z++) {
+                    if (this.isAir(x, y, z)) {
+                        continue;
+                    }
+
+                    if (this.isAir(x, y, z + 1)) {
+                        //
+                    }
+                }
+            }
+        }
     }
 
     isAir(x, y, z) {
